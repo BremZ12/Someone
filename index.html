@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Untuk Kamu ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg,#ffdde1,#ee9ca7);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.container {
+    width: 100%;
+    max-width: 420px;
+    padding: 15px;
+    position: relative;
+    z-index: 2;
+}
+
+.progress {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+.progress span {
+    font-size: 18px;
+    opacity: .3;
+}
+.progress span.active {
+    opacity: 1;
+}
+
+.box {
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 12px 30px rgba(0,0,0,.25);
+    animation: fade .6s;
+    position: relative;
+}
+
+@keyframes fade {
+    from {opacity:0; transform:translateY(10px) scale(.97)}
+    to {opacity:1; transform:translateY(0) scale(1)}
+}
+
+button {
+    margin: 8px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 25px;
+    background: #ff5f7e;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+button:active { transform: scale(.95); }
+
+.heart {
+    position: absolute;
+    font-size: 40px;
+    cursor: pointer;
+    animation: pulse 1s infinite;
+}
+@keyframes pulse {
+    0% {transform:scale(1)}
+    50% {transform:scale(1.2)}
+    100% {transform:scale(1)}
+}
+
+.swipe-hint {
+    font-size: 12px;
+    opacity: .6;
+    margin-top: 12px;
+}
+
+.floating-heart {
+    position: absolute;
+    bottom: -20px;
+    font-size: 16px;
+    opacity: .4;
+    animation: floatUp linear infinite;
+}
+@keyframes floatUp {
+    from {transform: translateY(0)}
+    to {transform: translateY(-110vh)}
+}
+</style>
+</head>
+
+<body>
+
+<div id="floating"></div>
+
+<div class="container">
+    <div class="progress" id="progress"></div>
+    <div class="box" id="app"></div>
+</div>
+
+<script>
+/* ===== CUSTOM ===== */
+const partnerName = "Nama Kamu";
+/* ================= */
+
+let step = 0;
+let heartClick = 0;
+let emotionScore = 0;
+const totalHeart = 5;
+
+const questions = [
+    {
+        type: "playful",
+        q: `${""}, kalau aku tiba-tiba ngilang, kamu bakal?`,
+        a: [
+            { text: "Nyariin", score: 3 },
+            { text: "Nunggu", score: 1 },
+            { text: "Kangen", score: 2 },
+            { text: "Santai aja", score: 1 }
+        ]
+    },
+    {
+        type: "playful",
+        q: `Kamu lebih suka yang mana?`,
+        a: [
+            { text: "Ngobrol lama", score: 2 },
+            { text: "Diam tapi nyaman", score: 2 },
+            { text: "Random ketawa", score: 1 },
+            { text: "Saling Call-an", score: 3 }
+        ]
+    },
+    {
+        type: "serious",
+        q: `Apa yang paling penting kamu jaga dalam hubungan?`,
+        a: [
+            { text: "Kepercayaan", score: 3 },
+            { text: "Komunikasi", score: 3 },
+            { text: "Pengertian", score: 2 },
+            { text: "Dapet jajan gratis :>", score: 2 }
+        ]
+    },
+    {
+        type: "serious",
+        q: `Kalau aku nggak punya apa-apa (tapi tetap diusahain), kamu mau?`,
+        a: [
+            { text: "Tetap di sampingmu", score: 3 },
+            { text: "Bantu sebisanya", score: 2 },
+            { text: "Aku butuh waktu", score: 1 }
+        ]
+    }
+];
+
+const totalSteps = 6 + questions.length;
+const app = document.getElementById("app");
+const progress = document.getElementById("progress");
+
+/* ===== PROGRESS ===== */
+function renderProgress() {
+    progress.innerHTML = "";
+    for (let i = 0; i < totalSteps; i++) {
+        const h = document.createElement("span");
+        h.innerHTML = "❤️";
+        if (i <= step) h.classList.add("active");
+        progress.appendChild(h);
+    }
+}
+
+/* ===== RENDER ===== */
+function render() {
+    renderProgress();
+
+    if (step === 0) {
+        app.innerHTML = `
+            <h2>404 ❤️</h2>
+            <p>Heart Not Found</p>
+            <button onclick="next()">Retry</button>
+        `;
+    }
+    else if (step === 1) {
+        app.innerHTML = `
+            <p>Hatiku sempat tersesat…</p>
+            <p>ternyata berhenti di <b>${"KAMU"}</b>.</p>
+            <button onclick="next()">Lanjut</button>
+        `;
+    }
+    else if (step >= 2 && step < 2 + questions.length) {
+        const q = questions[step - 2];
+        app.innerHTML = `
+            <p>${q.type === "playful" ? "😄" : "❤️"} ${q.q}</p>
+            ${q.a.map(a =>
+                `<button onclick="answer(${a.score})">${a.text}</button>`
+            ).join("")}
+            <div class="swipe-hint">jawaban jujur itu manis</div>
+        `;
+    }
+    else if (step === 2 + questions.length) {
+        heartClick = 0;
+        app.innerHTML = `
+            <p>Tangkap hatiku ❤️</p>
+            <p>${heartClick} / ${totalHeart}</p>
+        `;
+        spawnHeart();
+    }
+    else if (step === 3 + questions.length) {
+        let count = 5;
+        const timer = setInterval(() => {
+            app.innerHTML = `<p>Pengakuan dalam ${count}</p>`;
+            count--;
+            if (count < 0) {
+                clearInterval(timer);
+                next();
+            }
+        }, 1000);
+    }
+    else if (step === 4 + questions.length) {
+        showEndingQuestion();
+    }
+}
+
+/* ===== MINI GAME ===== */
+function spawnHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤️";
+    heart.style.top = Math.random() * 180 + "px";
+    heart.style.left = Math.random() * 260 + "px";
+
+    heart.onclick = () => {
+        heartClick++;
+        heart.remove();
+        if (heartClick >= totalHeart) next();
+        else {
+            app.querySelector("p:nth-child(2)").innerText =
+                `${heartClick} / ${totalHeart}`;
+            spawnHeart();
+        }
+    };
+    app.appendChild(heart);
+}
+
+/* ===== ANSWER ===== */
+function answer(score) {
+    emotionScore += score;
+    next();
+}
+
+/* ===== ENDING QUESTION ===== */
+function showEndingQuestion() {
+    app.innerHTML = `
+        <h3>${""}, setelah baca semua ini…</h3>
+        <p>kamu mau gimana?</p>
+        <button onclick="finalResponse(1)">Aku mau lanjut</button>
+        <button onclick="finalResponse(2)">Pelan-pelan aja</button>
+        <button onclick="finalResponse(3)">Temenan aja(tapi spesial)</button>
+        <button onclick="finalResponse(4)">Aku senang baca ini</button>
+    `;
+}
+
+/* ===== FINAL RESPONSE ===== */
+function finalResponse(type) {
+    let tone = "";
+
+    if (emotionScore >= 8) tone = "Hangat banget rasanya.";
+    else if (emotionScore >= 5) tone = "Aku ngerasa dihargai.";
+    else tone = "Aku tetap tersenyum bacanya.";
+
+    const responses = {
+        1: `<h3>❤️ Terima kasih</h3><p>${tone}</p><p>Aku senang kamu mau lanjut.</p>`,
+        2: `<h3>🌱 Tidak apa-apa</h3><p>${tone}</p><p>Kita jalan pelan-pelan.</p>`,
+        3: `<h3>❤️ It's okay</h3><p>${tone}</p><p>Kita jalanin aja.</p>`,
+        4: `<h3>😊 Itu cukup</h3><p>${tone}</p><p>Kalau kamu senang, aku juga.</p>`
+    };
+
+    app.innerHTML = responses[type];
+}
+
+/* ===== FLOATING HEART ===== */
+function floatingHearts() {
+    if (window.innerWidth > 768) return;
+    const heart = document.createElement("div");
+    heart.className = "floating-heart";
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (6 + Math.random() * 6) + "s";
+    document.getElementById("floating").appendChild(heart);
+    setTimeout(() => heart.remove(), 12000);
+}
+setInterval(floatingHearts, 800);
+
+/* ===== NEXT ===== */
+function next() {
+    step++;
+    render();
+}
+
+render();
+</script>
+
+</body>
+</html>
