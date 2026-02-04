@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Untukmu</title>
+
+<style>
+
+/* Background premium gradient */
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:'Georgia',serif;
+    background:linear-gradient(145deg,#0f0c29,#302b63,#24243e);
+    overflow:hidden;
+}
+
+/* Floating hearts SUPER ringan */
+.heart{
+    position:absolute;
+    bottom:-10px;
+    color:#ffb3c6;
+    font-size:14px;
+    opacity:.35;
+    animation:floatUp linear forwards;
+}
+
+@keyframes floatUp{
+    from{
+        transform:translateY(0);
+        opacity:.4;
+    }
+    to{
+        transform:translateY(-120vh);
+        opacity:0;
+    }
+}
+
+/* Card mewah */
+.card{
+    width:90%;
+    max-width:720px;
+    padding:65px 55px;
+    border-radius:22px;
+
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(18px);
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.6),
+        inset 0 0 40px rgba(255,255,255,.05);
+
+    color:white;
+    line-height:1.9;
+
+    transform:translateY(40px);
+    opacity:0;
+    transition:1.4s;
+}
+
+/* muncul setelah klik */
+.card.show{
+    transform:translateY(0);
+    opacity:1;
+}
+
+/* Judul */
+h1{
+    font-weight:normal;
+    letter-spacing:2px;
+}
+
+/* teks muncul perlahan */
+.fadeText{
+    opacity:0;
+    transform:translateY(15px);
+    transition:.9s;
+}
+
+.fadeText.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+.signature{
+    margin-top:50px;
+    font-style:italic;
+}
+
+/* Tombol buka */
+.openBtn{
+    position:absolute;
+    padding:18px 34px;
+    border-radius:40px;
+    border:none;
+    font-size:18px;
+    cursor:pointer;
+
+    background:linear-gradient(45deg,#ff758c,#ff7eb3);
+    color:white;
+
+    box-shadow:0 10px 30px rgba(255,120,150,.6);
+    transition:.3s;
+}
+
+.openBtn:hover{
+    transform:scale(1.05);
+}
+
+/* Mobile */
+@media(max-width:600px){
+    .card{
+        padding:45px 28px;
+        line-height:1.8;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<button class="openBtn" onclick="openLetter()">
+💌 Buka Surat
+</button>
+
+<div class="card" id="card">
+
+<h1>Untuk Kamu</h1>
+
+<p class="fadeText">
+Aku tidak pernah merencanakan untuk jatuh hati.
+</p>
+
+<p class="fadeText">
+Namun entah sejak kapan, namamu mulai sering muncul
+di pikiranku — bahkan dalam hal-hal kecil sekalipun.
+</p>
+
+<p class="fadeText">
+Kamu datang bukan dengan gemuruh,
+tapi dengan ketenangan yang perlahan terasa seperti rumah.
+</p>
+
+<p class="fadeText">
+Bersamamu, hal sederhana terasa istimewa.
+Diam pun terasa nyaman.
+</p>
+
+<p class="fadeText">
+Hari ini aku hanya ingin jujur…
+</p>
+
+<p class="fadeText">
+<b>Aku menyukaimu.</b>
+Bukan sekadar karena siapa dirimu,
+tetapi karena bagaimana dirimu membuat duniaku terasa berbeda.
+</p>
+
+<p class="fadeText">
+Aku tidak ingin terburu-buru,
+tidak juga ingin menekanmu dengan harapan.
+Aku hanya ingin membuka perasaanku,
+dan melihat apakah kita bisa berjalan ke arah yang sama.
+</p>
+
+<p class="fadeText">
+Jika kamu bersedia,
+aku ingin mengenalmu lebih lama,
+tertawa lebih banyak,
+dan menciptakan cerita yang hanya dimiliki oleh kita.
+</p>
+
+<p class="fadeText">
+Dan jika ternyata waktunya belum tepat —
+aku tetap bersyukur pernah dipertemukan denganmu.
+</p>
+
+<div class="signature fadeText">
+Dengan perasaan paling tulus,<br>
+<b>Namamu ❤️</b>
+</div>
+
+</div>
+
+<script>
+
+/* buka surat */
+function openLetter(){
+
+    document.querySelector('.openBtn').style.display='none';
+
+    const card=document.getElementById('card');
+
+    setTimeout(()=>{
+        card.classList.add('show');
+    },200);
+
+    /* teks muncul satu per satu */
+    const texts=document.querySelectorAll('.fadeText');
+
+    texts.forEach((el,i)=>{
+        setTimeout(()=>{
+            el.classList.add('show');
+        },900 + (i*500));
+    });
+
+    startHearts();
+}
+
+/* hearts ringan */
+function startHearts(){
+    setInterval(()=>{
+
+        const h=document.createElement("div");
+        h.className="heart";
+        h.innerHTML="❤";
+
+        h.style.left=Math.random()*100+"vw";
+        h.style.fontSize=(12+Math.random()*10)+"px";
+        h.style.animationDuration=(6+Math.random()*4)+"s";
+
+        document.body.appendChild(h);
+
+        setTimeout(()=>h.remove(),10000);
+
+    },500);
+}
+
+</script>
+
+</body>
+</html>
