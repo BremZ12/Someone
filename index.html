@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surat Untukmu</title>
+
+<style>
+/* ===== RESET ===== */
+*{
+    box-sizing:border-box;
+}
+
+/* ===== BACKGROUND ===== */
+body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:
+        radial-gradient(circle at top, rgba(255,255,255,.6), transparent 60%),
+        linear-gradient(135deg,#f8cdda,#fce2db);
+    font-family: "Georgia", "Times New Roman", serif;
+    overflow:hidden;
+    color:#2f2f2f;
+}
+
+/* ===== FLOATING PETALS ===== */
+.petal{
+    position:absolute;
+    bottom:-30px;
+    font-size:14px;
+    opacity:.18;
+    animation:floatUp linear forwards;
+    pointer-events:none;
+}
+
+@keyframes floatUp{
+    from{transform:translateY(0) rotate(0deg)}
+    to{transform:translateY(-120vh) rotate(360deg)}
+}
+
+/* ===== LETTER CARD ===== */
+.letter{
+    position:relative;
+    width:90%;
+    max-width:720px;
+    background:rgba(255,255,255,.92);
+    padding:70px 65px;
+    border-radius:22px;
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.25),
+        inset 0 0 0 1px rgba(255,255,255,.6);
+    line-height:1.9;
+    animation:reveal 1.5s ease;
+}
+
+/* ===== REVEAL ANIMATION ===== */
+@keyframes reveal{
+    from{
+        opacity:0;
+        transform:translateY(40px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* ===== DECORATIVE HEART ===== */
+.ornament{
+    position:absolute;
+    top:-38px;
+    right:-38px;
+    font-size:90px;
+    opacity:.12;
+}
+
+/* ===== TYPOGRAPHY ===== */
+h1{
+    margin-top:0;
+    font-weight:normal;
+    letter-spacing:.04em;
+}
+
+p{
+    margin:18px 0;
+}
+
+strong{
+    font-weight:600;
+}
+
+/* ===== SIGNATURE ===== */
+.signature{
+    margin-top:55px;
+    font-style:italic;
+    text-align:right;
+}
+
+/* ===== MOBILE ===== */
+@media(max-width:600px){
+    .letter{
+        padding:45px 32px;
+        line-height:1.8;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="floating"></div>
+
+<div class="letter">
+
+<div class="ornament">❤️</div>
+
+<h1>Untuk Kamu</h1>
+
+<p>
+Aku tidak tahu sejak kapan perasaan ini mulai berubah.
+</p>
+
+<p>
+Awalnya hanyalah percakapan biasa, tawa kecil, dan momen-momen sederhana.  
+Namun perlahan, tanpa aku sadari, kamu menjadi seseorang yang selalu hadir di pikiranku — bahkan saat aku tidak mencarinya.
+</p>
+
+<p>
+Ada banyak hal di dunia ini yang datang dengan suara keras,  
+tetapi perasaanku kepadamu justru tumbuh dalam diam, dengan tenang… lalu menetap.
+</p>
+
+<p>
+Bersamamu terasa berbeda.  
+Seperti menemukan tempat pulang, tanpa pernah tersesat sebelumnya.
+</p>
+
+<p>
+Mungkin aku bukan orang yang pandai merangkai kata.  
+Mungkin juga caraku mencintai tidak selalu sempurna.  
+Namun satu hal yang ingin aku pastikan kamu tahu:
+</p>
+
+<p>
+<strong>Perasaan ini tulus.</strong>
+</p>
+
+<p>
+Hari ini aku memilih untuk jujur, tanpa drama, tanpa paksaan.
+</p>
+
+<p>
+<strong>Aku suka kamu.</strong>
+</p>
+
+<p>
+Bukan hanya karena senyummu, atau caramu berbicara.  
+Tapi karena caramu membuat segalanya terasa lebih ringan — bahkan hari yang berat sekalipun.
+</p>
+
+<p>
+Aku tidak ingin terburu-buru.  
+Aku juga tidak ingin memaksakan apa pun.
+</p>
+
+<p>
+Aku hanya ingin membuka perasaanku…  
+dan berharap, mungkin, ada sedikit ruang di hatimu untukku.
+</p>
+
+<p>
+Apa pun jawabannya nanti, aku tetap bersyukur telah mengenalmu.  
+Karena mengenalmu saja sudah menjadi pengalaman yang indah bagiku.
+</p>
+
+<div class="signature">
+Dengan perasaan paling jujur,<br>
+<strong>Namamu</strong>
+</div>
+
+</div>
+
+<script>
+/* ===== FLOATING PETALS ===== */
+setInterval(()=>{
+    const p=document.createElement("div");
+    p.className="petal";
+    p.innerHTML="❤️";
+    p.style.left=Math.random()*100+"vw";
+    p.style.animationDuration=(8+Math.random()*8)+"s";
+    document.getElementById("floating").appendChild(p);
+    setTimeout(()=>p.remove(),16000);
+},1100);
+</script>
+
+</body>
+</html>
