@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Untuk Kamu</title>
+
+<style>
+/* ===== RESET ===== */
+*{box-sizing:border-box}
+body{
+    margin:0;
+    height:100vh;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:"Georgia",serif;
+    background:#05050a;
+    color:#eaeaea;
+}
+
+/* ===== CINEMATIC BACKGROUND ===== */
+.bg{
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(140,120,255,.18), transparent 40%),
+      radial-gradient(circle at 70% 80%, rgba(255,120,180,.15), transparent 45%),
+      linear-gradient(160deg,#070712,#0c0c20,#04040a);
+    animation:bgShift 22s ease-in-out infinite alternate;
+}
+@keyframes bgShift{
+    to{filter:hue-rotate(12deg)}
+}
+
+/* ===== SOFT LIGHT ===== */
+.light{
+    position:absolute;
+    width:140%;
+    height:140%;
+    background:radial-gradient(circle, rgba(255,255,255,.05), transparent 60%);
+    animation:lightMove 18s linear infinite;
+}
+@keyframes lightMove{
+    from{transform:translate(-10%,-10%)}
+    to{transform:translate(-35%,-35%)}
+}
+
+/* ===== LETTER CARD ===== */
+.card{
+    position:relative;
+    width:90%;
+    max-width:720px;
+    padding:70px 60px;
+    background:rgba(255,255,255,.06);
+    backdrop-filter:blur(18px);
+    border-radius:22px;
+    box-shadow:
+        0 30px 90px rgba(0,0,0,.8),
+        inset 0 0 50px rgba(255,255,255,.04);
+    opacity:0;
+    transform:translateY(40px);
+    animation:cardIn 2.2s ease forwards;
+    animation-delay:1.4s;
+}
+@keyframes cardIn{
+    to{opacity:1;transform:translateY(0)}
+}
+
+/* ===== TEXT ===== */
+h1{
+    font-weight:normal;
+    letter-spacing:2px;
+    margin-bottom:30px;
+}
+.line{
+    opacity:0;
+    transform:translateY(18px);
+    animation:lineIn .9s forwards;
+}
+@keyframes lineIn{
+    to{opacity:1;transform:translateY(0)}
+}
+
+.signature{
+    margin-top:55px;
+    font-style:italic;
+    opacity:.9;
+}
+
+/* ===== HEART PARTICLES (VERY SUBTLE) ===== */
+.heart{
+    position:absolute;
+    bottom:-20px;
+    font-size:12px;
+    color:#ff9ecb;
+    opacity:.25;
+    animation:floatUp linear forwards;
+}
+@keyframes floatUp{
+    to{
+        transform:translateY(-120vh);
+        opacity:0;
+    }
+}
+
+/* ===== MOBILE ===== */
+@media(max-width:600px){
+    .card{
+        padding:45px 28px;
+        line-height:1.85;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+<div class="light"></div>
+
+<div class="card" id="card">
+
+<h1 class="line">Untuk Kamu</h1>
+
+<p class="line">
+Aku tidak tahu kapan perasaanku berubah menjadi sejelas ini.
+</p>
+
+<p class="line">
+Yang aku tahu,
+setiap kali hariku terasa berat,
+namamu selalu muncul lebih dulu.
+</p>
+
+<p class="line">
+Kamu tidak datang untuk mengisi kekosongan.
+Kamu datang dan membuat segalanya terasa utuh.
+</p>
+
+<p class="line">
+Aku menyukai caramu hadir —
+tenang,
+tanpa berusaha menguasai,
+namun selalu terasa.
+</p>
+
+<p class="line">
+Hari ini aku tidak ingin bersembunyi lagi.
+</p>
+
+<p class="line">
+<b>Aku jatuh cinta padamu.</b><br>
+Bukan dengan ledakan,
+tapi dengan keyakinan yang tumbuh perlahan.
+</p>
+
+<p class="line">
+Aku tidak meminta apa pun.
+Tidak jawaban cepat,
+tidak janji.
+</p>
+
+<p class="line">
+Aku hanya ingin kamu tahu
+bahwa ada seseorang
+yang memilihmu dengan sadar.
+</p>
+
+<p class="line">
+Jika suatu hari kamu melangkah ke arahku,
+aku akan menyambutmu sepenuh hati.
+</p>
+
+<p class="line">
+Dan jika tidak,
+aku tetap bersyukur
+pernah memiliki keberanian
+untuk jujur.
+</p>
+
+<div class="signature line">
+Dengan perasaan yang tidak main-main,<br>
+<b>Namamu</b>
+</div>
+
+</div>
+
+<script>
+/* ===== TEXT TIMING ===== */
+const lines=document.querySelectorAll(".line");
+lines.forEach((el,i)=>{
+    el.style.animationDelay=(3 + i*1.1)+"s";
+});
+
+/* ===== HEARTS ===== */
+setInterval(()=>{
+    const h=document.createElement("div");
+    h.className="heart";
+    h.innerHTML="❤";
+    h.style.left=Math.random()*100+"vw";
+    h.style.animationDuration=(8+Math.random()*5)+"s";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),13000);
+},1200);
+</script>
+
+</body>
+</html>
